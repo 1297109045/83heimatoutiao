@@ -6,17 +6,16 @@
     </el-col>
     <el-col :span="3" >
       <img class="header-img" :src="userInof.photo?userInof.photo:defaultImg" alt />
-      <el-dropdown trigger="click">
+      <el-dropdown @command="commonClick" trigger="click">
         <span class="el-dropdown-link ">
           {{userInof.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-plus">黄金糕</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus">狮子头</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus-outline">螺蛳粉</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-check">蚵仔煎</el-dropdown-item>
+          <el-dropdown-item command="account" icon="el-icon-plus">账户信息</el-dropdown-item>
+          <el-dropdown-item command="git" icon="el-icon-circle-plus">狮子头</el-dropdown-item>
+          <el-dropdown-item command="lgout" icon="el-icon-circle-plus-outline">退出</el-dropdown-item>
+
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -40,6 +39,16 @@ export default {
       }).then(result => {
         this.userInof = result.data.data
       })
+    },
+    commonClick (key) {
+      if (key === 'account') {
+        this.$router.push('/home/account')
+      } else if (key === 'git') {
+        window.location.href = 'https://github.com/1297109045/83heimatoutiao.git'
+      } else {
+        window.localStorage.clear() // 只能清除本项目的所有前端缓存
+        this.$router.push('/login') // 跳转到登录页
+      }
     }
   },
   created () {
