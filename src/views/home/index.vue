@@ -1,56 +1,34 @@
 <template>
-<div class="layout-aside">
-  <div class="title">
-    <img src="../../assets/img/logo_admin.png" alt="">
-  </div>
-  <el-menu style="width:201px"
-      background-color="#353b4e"
-      text-color="#adafb5"
-      active-text-color="#ffd04b"
-  >
-    <el-menu-item index="4">
-      <i class="el-icon-s-home"></i>
-      <span slot="title">首页</span>
-    </el-menu-item>
-    <el-submenu index="1">
-      <template slot="title">
-        <i class="el-icon-document"></i>
-      <span>内容管理</span>
-      </template>
-         <el-menu-item>发布文章</el-menu-item>
-         <el-menu-item>内容列表</el-menu-item>
-         <el-menu-item>评论列表</el-menu-item>
-         <el-menu-item>素材管理</el-menu-item>
-    </el-submenu>
-     <el-submenu index="2">
-      <template slot="title">
-        <i class='el-icon-s-custom'></i>
-      <span>粉丝管理</span>
-      </template>
-         <el-menu-item>发布文章</el-menu-item>
-         <el-menu-item>内容列表</el-menu-item>
-         <el-menu-item>评论列表</el-menu-item>
-         <el-menu-item>素材管理</el-menu-item>
-    </el-submenu>
-    <el-menu-item index="3">
-      <i class="el-icon-setting"></i>
-      <span>账户信息</span>
-    </el-menu-item>
-  </el-menu>
+<el-container>
 
-</div>
+  <el-aside style="width:200px">
+     <layout-aside></layout-aside>
+    </el-aside>
+<!-- 右侧大容器 -->
+  <el-container>
+    <el-header>
+      <layout-header></layout-header>
+    </el-header>
+  </el-container>
+   <!-- 中部区域 -->
+  <el-main>
+    <router-view></router-view>
+  </el-main>
+</el-container>
+
 </template>
 
 <script>
+import layoutAside from '../../components/home/layout-aside'
+import layoutHeader from '../../components/home/layout-header'
 export default {
-
+  components: {
+    'layout-aside': layoutAside,
+    'layout-header': layoutHeader
+  }
 }
 </script>
 
-<style scoped>
-.title{
-  height: 45px;
-  background-color:#353b4e;
-  width:201px
-}
+<style>
+
 </style>
