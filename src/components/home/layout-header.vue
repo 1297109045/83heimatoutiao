@@ -1,14 +1,14 @@
 <template>
   <el-row type="flex" class="layout-header" justify="space-between">
     <el-col :span="8">
-      <i class="el-icon-s-unfold "></i>
-      <span>江苏传智播客教育科技股份有限公司</span>
+      <i style="font-size:22px" class="el-icon-s-unfold "></i>
+      <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col :span="3" >
-      <img class="header-img" :src="userInof.photo?userInof.photo:defaultImg" alt />
+      <img class="header-img" :src="userInfo.photo?userInfo.photo:defaultImg" alt />
       <el-dropdown @command="commonClick" trigger="click">
         <span class="el-dropdown-link ">
-          {{userInof.name}}
+          {{userInfo.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -26,7 +26,7 @@
 export default {
   data () {
     return {
-      userInof: {},
+      userInfo: {},
       defaultImg: require('../../assets/img/avatar.jpg')
     }
   },
@@ -37,7 +37,7 @@ export default {
         url: '/user/profile',
         headers: { 'Authorization': `Bearer ${token}` }
       }).then(result => {
-        this.userInof = result.data.data
+        this.userInfo = result.data.data
       })
     },
     commonClick (key) {
@@ -61,12 +61,13 @@ export default {
 <style lang="less" scoped>
 .layout-header{
     height: 50px;
-    width:1600px;
+    .title{
+        vertical-align:top;
+    }
     .header-img{
         height:40px;
         border-radius:50%;
         vertical-align:bottom;
-
     }
 }
 </style>

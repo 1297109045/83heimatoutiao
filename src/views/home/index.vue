@@ -1,7 +1,7 @@
 <template>
 <el-container>
 
-  <el-aside style="width:200px , overflow:hidden" >
+  <el-aside class="aside" style="width:200px" >
      <layout-aside></layout-aside>
     </el-aside>
 <!-- 右侧大容器 -->
@@ -9,11 +9,12 @@
     <el-header>
       <layout-header></layout-header>
     </el-header>
-  </el-container>
-   <!-- 中部区域 -->
-  <el-main>
+    <el-main style="padding:0">
     <router-view></router-view>
   </el-main>
+  </el-container>
+   <!-- 中部区域 -->
+
 </el-container>
 
 </template>
@@ -25,6 +26,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.aside{
+  overflow: hidden;
+  background-color:#353b4e
+}
 </style>

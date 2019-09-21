@@ -54,9 +54,15 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.layout-aside{
+  height: 100vh;
+  background-color: #353b4e;
+  width:200px;
   .title{
   background-color: #353b4e;
   width: 200px;
 
 }
+}
+
 </style>
