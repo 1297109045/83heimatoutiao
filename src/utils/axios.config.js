@@ -3,20 +3,22 @@ import router from '../pemission'
 import { Message } from 'element-ui'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // 请求拦截
-axios.interceptors.request.use(function (config) {
-  // console.log(111)
-  // console.log(error.response)
-  let token = window.localStorage.grtItem('user-token')
+axios.interceptors.request.use((config) => {
+  console.log(config)
+  console.log(1121)
+  // console.log(error.response)  13911111111  246810
+  let token = window.localStorage.getItem('user-token')
   config.headers['Authorization'] = `Bearer ${token}`
   return config
 }, function (error) {
+  console.log(33)
   // 对请求失败做处理
   return Promise.reject(error)
 })
 // 响应拦截 响应数据回来到达then方法之前
 axios.interceptors.response.use(function (response) {
+  console.log(113331)
   // 对响应数据做处理.执行成功时进入
-  console.log(1111)
   return response.data ? response.data : {}
 }, function (error) {
   // 执行失败时执行

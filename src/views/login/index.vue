@@ -44,6 +44,7 @@ export default {
         agree: false
       },
       loginRules: {
+
         mobile: [{ required: true, message: '请输入手机号' },
           { pattern: /^1[3456789]\d{9}$/, message: '请输入合法的手机号' }],
         code: [{ required: true, message: '请输入您的验证码' },
@@ -57,6 +58,7 @@ export default {
       this.$refs.myForm.validate((isOK) => {
         if (isOK) {
           this.$axios({
+
             url: '/authorizations',
             method: 'post',
             data: this.loginForm
