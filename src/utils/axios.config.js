@@ -1,7 +1,11 @@
 import axios from 'axios'
 import router from '../pemission'
 import { Message } from 'element-ui'
+import jsonBigint from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+axios.defaults.transformResponse = [function (data) {
+  return jsonBigint.parse(data) // 换一个转换方式
+}]
 // 请求拦截
 axios.interceptors.request.use((config) => {
   // console.log(error.response)  13911111111  246810

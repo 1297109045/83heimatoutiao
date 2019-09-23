@@ -66,12 +66,12 @@ export default {
             window.localStorage.setItem('user-token', result.data.token)
             this.$router.push('/')
           })
-          // .catch(() => {
-          //   this.$message({
-          //     message: '手机号或验证码错误',
-          //     type: 'warning'
-          //   })
-          // })
+            .catch(() => {
+              this.$message({
+                message: '手机号或验证码错误',
+                type: 'warning'
+              })
+            })
         }
       })
     }

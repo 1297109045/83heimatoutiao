@@ -15,7 +15,7 @@
             <!-- 作用域插槽接收el-table-cloumn row/... -->
             <template slot-scope="obj">
             <el-button  size="small" type="text">修改</el-button>
-            <el-button @click="closeOpen(obj.row)" size="small" type="text">
+            <el-button :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'} " @click="closeOpen(obj.row)" size="small" type="text">
               {{
                 obj.row.comment_status?'关闭评论':'打开评论'
               }}
@@ -49,7 +49,7 @@ export default {
         this.$axios({
           url: 'comments/status',
           method: 'put',
-          params: { article_id: row.id },
+          params: { article_id: row.id.toString() },
           data: { allow_comment: !row.comment_status }
         }).then(() => {
           this.getComment()
