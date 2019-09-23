@@ -12,8 +12,15 @@
           <el-table-column align="center" label="总评论数" prop="total_comment_count"></el-table-column>
           <el-table-column align="center" label="粉丝评论数" prop="fans_comment_count"></el-table-column>
           <el-table-column align="center" label="操作" >
-            <el-button size="small" type="text">修改</el-button>
-            <el-button size="small" type="text">关闭</el-button>
+            <!-- 作用域插槽接收el-table-cloumn row/... -->
+            <template slot-scope="obj">
+            <el-button  size="small" type="text">修改</el-button>
+            <el-button @click="closeOpen(obj.row)" size="small" type="text">
+              {{
+                obj.row.comment_status?'关闭评论':'打开评论'
+              }}
+              </el-button>
+               </template>
           </el-table-column>
       </el-table>
   </el-card>
@@ -27,12 +34,26 @@ export default {
     }
   },
   methods: {
+
     getComment () {
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment' }// params是路径参数也是query
       }).then(result => {
         this.list = result.data.results
+      })
+    },
+    closeOpen (row) {
+      let mess = row.comment_status ? '关闭' : '打开'
+      this.$confirm(`你确定要${mess}评论`).then(() => {
+        this.$axios({
+          url: 'comments/status',
+          method: 'put',
+          params: { article_id: row.id },
+          data: { allow_comment: !row.comment_status }
+        }).then(() => {
+          this.getComment()
+        })
       })
     },
     stateFormatter (row, column, cellValue, index) {
