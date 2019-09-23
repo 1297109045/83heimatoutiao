@@ -23,6 +23,11 @@
                </template>
           </el-table-column>
       </el-table>
+      <el-row type="flex" justify="center" style="margin:20px">
+      <el-pagination @current-change="changePage" :page-size="page.pageSize" :current-page="page.currentPage" background layout="prev, pager, next" :total="page.total"></el-pagination>
+
+      </el-row>
+
   </el-card>
 </template>
 
@@ -30,17 +35,27 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        total: 0, // 总页数
+        pageSize: 10, // 一页多少条
+        currentPage: 1// 默认第一页
+
+      }
     }
   },
   methods: {
-
+    changePage (newPage) {
+      this.page.currentPage = newPage// 更新最新页码给currentpage
+      this.getComment()
+    },
     getComment () {
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }// params是路径参数也是query
+        params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }// params是路径参数也是query
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     },
     closeOpen (row) {
