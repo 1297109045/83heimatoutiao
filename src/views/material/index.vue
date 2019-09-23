@@ -5,13 +5,13 @@
             素材管理
         </template>
       </bread-crumb>
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click=" getMaterial">
     <el-tab-pane label="全部素材" name="all">
         <div class="img-list">
             <el-card class="img-item" v-for="item in list" :key="item.id">
             <img :src="item.url" alt="">
             <div class="operate">
-                <i class="el-icon-star-on"></i>
+                <i :style='{color:item.is_collected?"red":"#000"}' class="el-icon-star-on"></i>
                 <i class="el-icon-delete-solid"></i>
             </div>
 
@@ -19,7 +19,13 @@
         </div>
 
     </el-tab-pane>
-    <el-tab-pane label="收藏素材" name="collect">收藏 </el-tab-pane>
+    <el-tab-pane  label="收藏素材" name="collect">
+         <div class="img-list">
+            <el-card class="img-item" v-for="item in list" :key="item.id">
+            <img :src="item.url" alt="">
+        </el-card>
+        </div>
+    </el-tab-pane>
 
   </el-tabs>
   </el-card>
@@ -34,14 +40,16 @@ export default {
     }
   },
   methods: {
-    getMaterial () {
+    getMaterial (collect) {
+      // this.activeName === 'collect'找收藏否则找全部
       this.$axios({
         url: 'user/images',
-        params: { collect: false }
+        params: { collect: this.activeName === 'collect' }
       }).then(result => {
         this.list = result.data.results
       })
     }
+
   },
   created () {
     this.getMaterial()
