@@ -5,6 +5,9 @@
             素材管理
         </template>
       </bread-crumb>
+      <el-upload :show-file-list="false" :http-request="uploadImg" action="" class="too-difficult">
+        <el-button type="primary">上传文件</el-button>
+      </el-upload>
       <el-tabs v-model="activeName" @tab-click=" changeType ">
     <el-tab-pane label="全部素材" name="all">
         <div class="img-list">
@@ -53,6 +56,17 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      const data = new FormData()
+      data.append('image', params.file)
+      this.$axios({
+        url: 'user/images',
+        method: 'post',
+        data
+      }).then(() => {
+        this.getMaterial()
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage// 更新最新页码给currentpage
       this.getMaterial()
@@ -80,6 +94,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.too-difficult{
+  position: absolute;
+  right:20px;
+  margin-top: -10px
+
+}
 .img-list{
     display:flex;
     flex-wrap:wrap;
