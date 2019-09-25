@@ -52,7 +52,7 @@
         <span>
           <i class="el-icon-edit"></i>修改
         </span>
-        <span>
+        <span @click="delArticles(item.id)">
           <i class="el-icon-delete"></i>删除
         </span>
       </div>
@@ -89,6 +89,17 @@ export default {
     }
   },
   methods: {
+    // 删除文章
+    delArticles (id) {
+      this.$confirm('确定要删除此文章吗？').then(() => {
+        this.$axios({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+          this.queryArticles()// 带条件的查询
+        })
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage
       this.queryArticles()
@@ -209,6 +220,7 @@ export default {
     font-size: 12px;
     span {
       margin-right: 8px;
+      cursor:pointer
     }
   }
 }
