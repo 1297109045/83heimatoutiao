@@ -6,24 +6,26 @@
     </bread-crumb>
     <el-form style="margin-left:50px">
       <el-form-item label="文章状态:">
-        <el-radio-group v-model="radio">
-          <el-radio>全部</el-radio>
-          <el-radio>草稿</el-radio>
-          <el-radio>待审核</el-radio>
-          <el-radio>审核通过</el-radio>
-          <el-radio>审核失败</el-radio>
+          <!-- v-model来源于 el-radio属性-->
+        <el-radio-group @change="changeCondition" v-model="formData.status">
+          <el-radio :label="5">全部</el-radio>
+          <el-radio :label="0">草稿</el-radio>
+          <el-radio :label="1">待审核</el-radio>
+          <el-radio :label="2">审核通过</el-radio>
+          <el-radio :label="3">审核失败</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="频道列表:">
-        <el-select v-model="select" placeholder="请选择">
-          <el-option></el-option>
+        <el-select @change="changeCondition" v-model="formData.channel_id" placeholder="请选择">
+          <el-option  v-for="item in channels" :key="item.id" :value="item.id" :label="item.name">{{item.name}}</el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="事件选择:">
         <el-date-picker
-          v-model="value1"
+        @change="changeCondition"
+          v-model="formData.date"
           type="daterange"
-          range-separator="-"
+          value-format="yyyy-MM-dd"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         ></el-date-picker>
@@ -53,14 +55,41 @@
 export default {
   data () {
     return {
+      formData: {
+        status: 5,
+        channel_id: null,
+        date: []
+      },
       list: [],
-      defaultImg: require('../../assets/img/a.jpg')
+      defaultImg: require('../../assets/img/a.jpg'),
+      channels: []
     }
   },
   methods: {
-    getArticles () {
+    changeCondition () {
+      // 只改变是formdata已经是最新的值
+    //   组装请求参数
+      let params = {
+        status: this.formData.status === 5 ? null : this.formData.status, // 状态为5
+        channel_id: this.formData.channel_id,
+        begin_pubdate: this.formData.date.length ? this.formData.date[0] : null, // 开始时间
+        end_pubdate: this.formData.date.length > 1 ? this.formData.date[1] : null// 结束时间
+      }
+      this.getArticles(params)
+    },
+    //   获取频道列表
+    getChannels () {
       this.$axios({
-        url: '/articles'
+        url: '/channels'
+      }).then(result => {
+        this.channels = result.data.channels
+      })
+    },
+
+    getArticles (params) {
+      this.$axios({
+        url: '/articles',
+        params
       }).then(result => {
         this.list = result.data.results// 获取文章列表
       })
@@ -68,6 +97,7 @@ export default {
   },
   created () {
     this.getArticles()
+    this.getChannels()
   },
   //   过滤器
   filters: {
@@ -84,20 +114,20 @@ export default {
         case 4:
           return '已删除'
       }
-    }
-  },
-  statusType (value) {
-    switch (value) {
-      case 0:
-        return 'warning'
-      case 1:
-        return 'info'
-      case 2:
-        return 'success'
-      case 3:
-        return 'dange'
-      case 4:
-        return 'danger'
+    },
+    statusType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return 'success'
+        case 3:
+          return 'dange'
+        case 4:
+          return 'danger'
+      }
     }
   }
 }
