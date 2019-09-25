@@ -14,8 +14,9 @@
             <el-card class="img-item" v-for="item in list" :key="item.id">
             <img :src="item.url" alt="">
             <div class="operate">
-                <i :style='{color:item.is_collected?"red":"#000"}' class="el-icon-star-on"></i>
-                <i class="el-icon-delete-solid"></i>
+                <i  :style='{color:item.is_collected?"red":"#000"}' class="el-icon-star-on"></i>
+                <!-- 删除素材 -->
+                <i @click="delImg(item.id)" class="el-icon-delete-solid"></i>
             </div>
 
         </el-card>
@@ -56,6 +57,16 @@ export default {
     }
   },
   methods: {
+    delImg (id) {
+      this.$confirm('确定要删除该图片吗').then(() => {
+        this.$axios({
+          url: `user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.getMaterial()
+        })
+      })
+    },
     uploadImg (params) {
       const data = new FormData()
       data.append('image', params.file)
