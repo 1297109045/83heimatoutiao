@@ -3,28 +3,28 @@
     <bread-crumb slot="header">
       <template slot="title">发表文章</template>
     </bread-crumb>
-    <el-form style="margin-left:100px" label-width="100px">
-      <el-form-item label="标题">
-        <el-input style="width:400px"></el-input>
+    <el-form ref="publishForm" :model=" formData" :rules=" pubshlishRules" style="margin-left:100px" label-width="100px">
+      <el-form-item prop="title" label="标题">
+        <el-input  v-model="formData.title"  style="width:400px"></el-input>
       </el-form-item>
-      <el-form-item label="内容">
-        <el-input type="textarea" :rows="4" placeholder="请输入内容"></el-input>
+      <el-form-item  prop="content" label="内容">
+        <el-input  v-model="formData.content"  type="textarea" :rows="4" placeholder="请输入内容"></el-input>
       </el-form-item>
-      <el-form-item label="封面">
-        <el-radio-group >
-          <el-radio>单图</el-radio>
-          <el-radio >多图</el-radio>
-          <el-radio >无图</el-radio>
-          <el-radio >自动</el-radio>
+      <el-form-item prop="cover" label="封面">
+        <el-radio-group  v-model="formData.cover.type" >
+          <el-radio :label="1">单图</el-radio>
+          <el-radio :label="3" >多图</el-radio>
+          <el-radio :label="0">无图</el-radio>
+          <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="频道">
-        <el-select>
+      <el-form-item prop="channel_id" label="频道">
+        <el-select v-model="formData.channel_id">
             <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id" ></el-option>
             </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布文章</el-button>
+        <el-button type="primary" @click="publish">发布文章</el-button>
         <el-button>存入草稿</el-button>
       </el-form-item>
     </el-form>
@@ -35,7 +35,22 @@
 export default {
   data () {
     return {
-      channels: []
+      channels: [],
+      formData: {
+        title: '', // 标题
+        content: '', // 内容
+        channel_id: null,
+        cover: {
+          type: 0,
+          images: []
+        }
+
+      },
+      pubshlishRules: {
+        title: [{ required: true, message: '标题不能为空' }],
+        content: [{ required: true, message: '内容不能为空' }],
+        channel_id: [{ required: true, message: '频道不能为空' }]
+      }
     }
   },
   methods: {
@@ -44,6 +59,13 @@ export default {
         url: '/channels'
       }).then(result => {
         this.channels = result.data.channels
+      })
+    },
+    publish () {
+      this.$refs.publishForm.validate((isOk) => {
+        if (isOk) {
+
+        }
       })
     }
   },
