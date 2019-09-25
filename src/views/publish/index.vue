@@ -24,8 +24,8 @@
             </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="publish">发布文章</el-button>
-        <el-button>存入草稿</el-button>
+        <el-button type="primary" @click="publish(false)">发布文章</el-button>
+        <el-button @click="publish(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -47,7 +47,8 @@ export default {
 
       },
       pubshlishRules: {
-        title: [{ required: true, message: '标题不能为空' }],
+        title: [{ required: true, message: '标题不能为空' },
+          { min: 5, max: 30, message: '标题控住在5到30之间 ' }],
         content: [{ required: true, message: '内容不能为空' }],
         channel_id: [{ required: true, message: '频道不能为空' }]
       }
@@ -61,10 +62,17 @@ export default {
         this.channels = result.data.channels
       })
     },
-    publish () {
+    publish (draft) {
       this.$refs.publishForm.validate((isOk) => {
         if (isOk) {
-
+          this.$axios({
+            url: '/articles',
+            method: 'post',
+            params: { draft },
+            data: this.formData
+          }).then(() => {
+            this.$router.push('/home/articles')
+          })
         }
       })
     }
