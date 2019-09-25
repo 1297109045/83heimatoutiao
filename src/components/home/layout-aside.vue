@@ -61,6 +61,7 @@ export default {
   .title{
   background-color: #353b4e;
   width: 200px;
+  text-align: center
 
 }
 }
