@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <template slot="title">发表文章</template>
     </bread-crumb>
@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       channels: [],
+      loading: false,
       formData: {
         title: '', // 标题
         content: '', // 内容
@@ -124,10 +125,12 @@ export default {
     },
     // 根据文章id获取文章详情
     getArticleById (articleId) {
+      this.loading = true
       this.$axios({
         url: `/articles/${articleId}`
       }).then(result => {
         this.formData = result.data
+        this.loading = false
       })
     }
   },
