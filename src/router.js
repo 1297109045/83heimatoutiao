@@ -32,8 +32,12 @@ export default new Router({
           path: 'articles',
           component: () => import('./views/articles')
         },
-        {
+        {// 新建组件
           path: 'publish',
+          component: () => import('./views/publish')
+        },
+        {
+          path: 'publish/:articleId',
           component: () => import('./views/publish')
         }
       ]

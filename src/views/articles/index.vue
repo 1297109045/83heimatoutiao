@@ -49,8 +49,8 @@
         </div>
       </div>
       <div class="right">
-        <span>
-          <i class="el-icon-edit"></i>修改
+        <span @click="goEdit(item.id)">
+           <i class="el-icon-edit"></i>修改
         </span>
         <span @click="delArticles(item.id)">
           <i class="el-icon-delete"></i>删除
@@ -89,6 +89,9 @@ export default {
     }
   },
   methods: {
+    goEdit (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 删除文章
     delArticles (id) {
       this.$confirm('确定要删除此文章吗？').then(() => {
