@@ -6,7 +6,8 @@
       </div>
       <!-- 弹层组件 -->
         <el-dialog @close="dialogVisible=false" :visible="dialogVisible">
-            <select-image></select-image>
+            <!-- 监听谁的事件就在谁的标签上写监听 -->
+            <select-image @seletOneImg="receiveImg"></select-image>
         </el-dialog>
   </div>
 </template>
@@ -23,6 +24,9 @@ export default {
   methods: {
     openLayer () {
       this.dialogVisible = true
+    },
+    receiveImg (url) {
+      alert(url)
     }
   }
 }

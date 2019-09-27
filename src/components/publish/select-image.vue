@@ -5,14 +5,17 @@
       <!-- 全部素材数据v-for循环 -->
       <div class="imgs-list">
         <el-card class="imgs-item" v-for="item in list" :key="item.id">
-          <img :src="item.url" alt />
+          <img @click="clickImg(item)"  :src="item.url" alt />
         </el-card>
       </div>
       <el-row type="flex" justify="center">
         <el-pagination
         background
         layout="prev, pager, next"
-        :total="1000">
+        :total="page.total"
+        :page-size="page.pageSize"
+        :current-page="page.currentPage"
+        @current-change="changePage">
         </el-pagination>
       </el-row>
     </el-tab-pane>
@@ -24,16 +27,30 @@
 export default {
   data () {
     return {
-      list: []
+      list: [], // 全部素材
+      page: {
+        total: 0,
+        currentPage: 1,
+        pageSize: 12
+      }
     }
   },
   methods: {
+    // 点击素材图片时触发
+    clickImg (item) {
+      this.$emit('seletOneImg', item.url)// 自定义事件若干参数
+    },
+    changePage (newPage) {
+      this.page.currentPage = newPage// 赋值最新页码
+      this.getAllImg()// 重新调用方法
+    },
     getAllImg () {
       this.$axios({
         url: 'user/images',
-        params: { collect: false }
+        params: { collect: false, page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     }
   },
