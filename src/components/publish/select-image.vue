@@ -38,7 +38,7 @@ export default {
   methods: {
     // 点击素材图片时触发
     clickImg (item) {
-      this.$emit('seletOneImg', item.url)// 自定义事件若干参数
+      this.$emit('selectOneImg', item.url)// 自定义事件若干参数
     },
     changePage (newPage) {
       this.page.currentPage = newPage// 赋值最新页码

@@ -1,13 +1,13 @@
 <template>
   <div class="cover-image">
       <!-- v-for生成封面图片 -->
-      <div @click="openLayer" class="cover-item" v-for="(item,index) in images" :key="index">
+      <div @click="openLayer(index)" class="cover-item" v-for="(item,index) in images" :key="index">
           <img :src="item?item:defaultImg" alt="">
       </div>
       <!-- 弹层组件 -->
         <el-dialog @close="dialogVisible=false" :visible="dialogVisible">
             <!-- 监听谁的事件就在谁的标签上写监听 -->
-            <select-image @seletOneImg="receiveImg"></select-image>
+            <select-image @selectOneImg="receiveImg"></select-image>
         </el-dialog>
   </div>
 </template>
@@ -18,15 +18,19 @@ export default {
   data () {
     return {
       defaultImg: require('../../assets/img/pic_bg.png'),
-      dialogVisible: false
+      dialogVisible: false, // 是否显示弹层
+      selectIndex: -1
     }
   },
   methods: {
-    openLayer () {
+    // 打开层
+    openLayer (index) {
       this.dialogVisible = true
+      this.selectIndex = index// 把当前点击图片索引值给data中的一个属性
     },
     receiveImg (url) {
-      alert(url)
+      this.$emit('selectOneImg', url, this.selectIndex)// 自定义事件若干参数
+      this.dialogVisible = false
     }
   }
 }

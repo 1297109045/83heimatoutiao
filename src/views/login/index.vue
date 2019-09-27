@@ -1,4 +1,3 @@
-
 <template>
   <div class="login">
     <el-card class="login-card">
@@ -6,7 +5,7 @@
         <img src="../../assets/img/logo_index.png" alt="">
       </div>
       <!-- 表单 -->
-  <el-form ref="myForm" :model="loginForm" :rules="loginRules" stylt="margin-top:20px">
+  <el-form ref="myForm" :model="loginForm" :rules="loginRules" style="margin-top:20px">
     <el-form-item prop="mobile">
       <!-- 手机号 -->
       <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
@@ -39,7 +38,7 @@ export default {
     }
     return {
       loginForm: {
-        moblie: '',
+        mobile: '',
         code: '',
         agree: false
       },
@@ -58,7 +57,6 @@ export default {
       this.$refs.myForm.validate((isOK) => {
         if (isOK) {
           this.$axios({
-
             url: '/authorizations',
             method: 'post',
             data: this.loginForm

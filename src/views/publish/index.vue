@@ -25,7 +25,7 @@
         </el-radio-group>
       </el-form-item>
       <!-- //封面组件 -->
-      <cover-image :images="formData.cover.images"></cover-image>
+      <cover-image @selectOneImg="changeImg" :images="formData.cover.images"></cover-image>
       <el-form-item prop="channel_id" label="频道">
         <el-select v-model="formData.channel_id">
           <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -64,6 +64,17 @@ export default {
     }
   },
   methods: {
+    // 接收子组件传过来的数据更改Images
+    changeImg (url, index) {
+      // this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+      //   if (index === i) {
+      //     // 说明找到了要修改的值
+      //     return url
+      //   }
+      //   return item
+      // })
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+    },
     // 类型改变事件
     changeType () {
     // 可以获取最新的Type
